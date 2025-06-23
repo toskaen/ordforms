@@ -21,4 +21,5 @@ admin.initializeApp(adminConfig);
 const db = admin.firestore();
 const storage = process.env.FIREBASE_BUCKET ? admin.storage().bucket() : undefined;
 
+
 module.exports = { db, storage };
