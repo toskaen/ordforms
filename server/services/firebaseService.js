@@ -28,6 +28,7 @@ if (serviceAccount && serviceAccount.private_key && serviceAccount.client_email)
   if (process.env.FIREBASE_BUCKET) {
     storage = admin.storage().bucket();
   }
+
 }
 
 module.exports = { db, storage };

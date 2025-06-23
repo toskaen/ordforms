@@ -24,6 +24,7 @@ variable, but are optional if you only need voucher validation. For GitHub
 OAuth, also set `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` and
 `GITHUB_CALLBACK_URL`.
 
+
 ### Frontend
 ```bash
 npm run dev
@@ -52,6 +53,7 @@ corresponding WIF key (`INTERNAL_BTC_WIF`) is required for OP_RETURN pushes.
 - Install Vercel CLI and run `vercel` to deploy.
 - The build script outputs static files to `dist/client` and the Express API is served from `/api`.
 - Set the following environment variables in Vercel:
+
   - `FIREBASE_SERVICE_ACCOUNT` – JSON string of your service account (optional)
   - `FIREBASE_BUCKET` – Cloud Storage bucket name (optional)
   - `ZAPRITE_API_KEY`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GITHUB_CALLBACK_URL`
