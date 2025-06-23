@@ -15,19 +15,20 @@ if (process.env.FIREBASE_SERVICE_ACCOUNT) {
   }
 }
 
-const adminConfig = {};
-if (serviceAccount && serviceAccount.private_key && serviceAccount.client_email) {
-  adminConfig.credential = admin.credential.cert(serviceAccount);
-}
-if (process.env.FIREBASE_BUCKET) {
-  adminConfig.storageBucket = process.env.FIREBASE_BUCKET;
-}
-admin.initializeApp(adminConfig);
-
-const db = admin.firestore();
+let db;
 let storage;
-if (process.env.FIREBASE_BUCKET) {
-  storage = admin.storage().bucket();
+
+if (serviceAccount && serviceAccount.private_key && serviceAccount.client_email) {
+  const adminConfig = { credential: admin.credential.cert(serviceAccount) };
+  if (process.env.FIREBASE_BUCKET) {
+    adminConfig.storageBucket = process.env.FIREBASE_BUCKET;
+  }
+  admin.initializeApp(adminConfig);
+  db = admin.firestore();
+  if (process.env.FIREBASE_BUCKET) {
+    storage = admin.storage().bucket();
+  }
+
 }
 
 module.exports = { db, storage };

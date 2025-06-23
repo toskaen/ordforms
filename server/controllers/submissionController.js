@@ -28,6 +28,9 @@ const parseResume = async (req, res) => {
 
 const createSubmission = async (req, res) => {
   try {
+    if (!db) {
+      return res.status(503).json({ success: false, error: 'Firebase disabled' });
+    }
     const data = req.body;
     let fileUrl;
     let tsHash;
@@ -73,6 +76,9 @@ const createSubmission = async (req, res) => {
 
 const getSubmission = async (req, res) => {
   try {
+    if (!db) {
+      return res.status(503).json({ success: false, error: 'Firebase disabled' });
+    }
     const { id } = req.params;
     const doc = await db.collection('submissions').doc(id).get();
     if (!doc.exists) {

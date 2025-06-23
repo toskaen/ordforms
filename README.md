@@ -18,7 +18,6 @@ npm install
 npm run dev
 ```
 
-
 Ensure you set `ZAPRITE_API_KEY`. Firebase credentials can be provided through
 `firebase-adminsdk.json` or the `FIREBASE_SERVICE_ACCOUNT` environment
 variable, but are optional if you only need voucher validation. For GitHub
