@@ -13,7 +13,6 @@ dotenv.config();
 
 const app = express();
 
-
 if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
   passport.use(
     new GitHubStrategy(
