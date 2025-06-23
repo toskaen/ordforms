@@ -2,33 +2,24 @@ const admin = require('firebase-admin');
 
 let serviceAccount;
 if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-  try {
-    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-  } catch {
-    serviceAccount = undefined;
-  }
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 } else {
-  try {
-    serviceAccount = require('../../firebase-adminsdk.json');
-  } catch {
-    serviceAccount = undefined;
-  }
+  serviceAccount = require('../../firebase-adminsdk.json');
 }
 
-let db;
-let storage;
-
-if (serviceAccount && serviceAccount.private_key && serviceAccount.client_email) {
-  const adminConfig = { credential: admin.credential.cert(serviceAccount) };
-  if (process.env.FIREBASE_BUCKET) {
-    adminConfig.storageBucket = process.env.FIREBASE_BUCKET;
-  }
-  admin.initializeApp(adminConfig);
-  db = admin.firestore();
-  if (process.env.FIREBASE_BUCKET) {
-    storage = admin.storage().bucket();
-  }
-
+if (!serviceAccount.private_key || !serviceAccount.client_email) {
+  throw new Error('Firebase credentials are missing');
 }
+
+const adminConfig = {
+  credential: admin.credential.cert(serviceAccount),
+  ...(process.env.FIREBASE_BUCKET ? { storageBucket: process.env.FIREBASE_BUCKET } : {})
+};
+
+admin.initializeApp(adminConfig);
+
+const db = admin.firestore();
+const storage = process.env.FIREBASE_BUCKET ? admin.storage().bucket() : undefined;
+
 
 module.exports = { db, storage };
