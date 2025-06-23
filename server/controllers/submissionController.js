@@ -9,7 +9,7 @@ const VALID_VOUCHER = 'PERMISSIONLESS';
 
 const verifyVoucher = (req, res) => {
   const { code } = req.body;
-  if (code === VALID_VOUCHER) {
+  if ((code || '').trim().toLowerCase() === VALID_VOUCHER.toLowerCase()) {
     return res.status(200).json({ valid: true });
   }
   return res.status(401).json({ valid: false, message: 'Invalid voucher' });
