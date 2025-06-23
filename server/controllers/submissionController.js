@@ -4,6 +4,7 @@ const pdf = require('pdf-parse');
 const { createTimestamp } = require('../services/timestampService');
 const crypto = require('crypto');
 const { estimateCost } = require('../services/ordinalsService');
+const { storeHash } = require('../services/evmService');
 
 const VALID_VOUCHER = 'PERMISSIONLESS';
 
@@ -68,6 +69,15 @@ const createSubmission = async (req, res) => {
       cost,
       createdAt: new Date().toISOString()
     });
+
+    if (contentHash) {
+      try {
+        await storeHash('0x' + contentHash);
+      } catch (e) {
+        console.error('EVM store failed', e);
+      }
+    }
+
     res.status(201).json({ success: true, id: docRef.id, cost, hash: contentHash });
   } catch (err) {
     res.status(500).json({ success: false, error: err });
