@@ -20,6 +20,9 @@ if (serviceAccount && Object.keys(serviceAccount).length) {
 }
 
 const db = admin.firestore();
-const storage = admin.storage().bucket();
+let storage;
+if (process.env.FIREBASE_BUCKET) {
+  storage = admin.storage().bucket();
+}
 
 module.exports = { db, storage };
