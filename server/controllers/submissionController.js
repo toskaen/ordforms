@@ -34,7 +34,7 @@ const createSubmission = async (req, res) => {
     let contentHash;
     let cost;
 
-    if (req.file) {
+    if (req.file && storage) {
       const upload = await storage.upload(req.file.path, {
         destination: `documents/${req.file.originalname}`
       });
@@ -48,6 +48,13 @@ const createSubmission = async (req, res) => {
       const hash = crypto.createHash('sha256').update(buffer).digest('hex');
       contentHash = hash;
       cost = await estimateCost(Buffer.from(hash, 'hex'));
+    } else if (req.file) {
+      const buffer = fs.readFileSync(req.file.path);
+      const ts = await createTimestamp(buffer);
+      tsHash = ts.hash;
+
+      const hash = crypto.createHash('sha256').update(buffer).digest('hex');
+      contentHash = hash;
     }
 
     const docRef = await db.collection('submissions').add({

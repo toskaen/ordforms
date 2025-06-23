@@ -13,18 +13,20 @@ dotenv.config();
 
 const app = express();
 
-passport.use(
-  new GitHubStrategy(
-    {
-      clientID: process.env.GITHUB_CLIENT_ID || '',
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
-      callbackURL: process.env.GITHUB_CALLBACK_URL || '/api/auth/github/callback'
-    },
-    (_accessToken, _refreshToken, profile, done) => {
-      done(null, profile);
-    }
-  )
-);
+if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
+  passport.use(
+    new GitHubStrategy(
+      {
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: process.env.GITHUB_CALLBACK_URL || '/api/auth/github/callback'
+      },
+      (_accessToken, _refreshToken, profile, done) => {
+        done(null, profile);
+      }
+    )
+  );
+}
 
 passport.serializeUser((user, done) => {
   done(null, user);
