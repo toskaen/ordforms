@@ -73,6 +73,18 @@ corresponding WIF key (`INTERNAL_BTC_WIF`) is required for OP_RETURN pushes.
 - `/api/auth/github`
 - `/api/auth/github/callback`
 
+## ⛓️ EVM Hash Registry
+
+`contracts/SubmissionRegistry.sol` provides a small smart contract to store
+submission hashes on Ethereum. Deploy it with Hardhat:
+
+```bash
+npx hardhat run scripts/deploy.js --network sepolia
+```
+
+Set `EVM_RPC_URL`, `EVM_PRIVATE_KEY` and `EVM_CONTRACT_ADDRESS` in the backend
+to record hashes automatically.
+
 ---
 
 ## 🧠 Future Ideas

@@ -4,6 +4,7 @@ const pdf = require('pdf-parse');
 const { createTimestamp } = require('../services/timestampService');
 const crypto = require('crypto');
 const { estimateCost } = require('../services/ordinalsService');
+const { storeHash } = require('../services/evmService');
 
 const VALID_VOUCHER = 'PERMISSIONLESS';
 
@@ -40,6 +41,15 @@ const createSubmission = async (req, res) => {
     if (req.file && storage) {
       const upload = await storage.upload(req.file.path, {
         destination: `documents/${req.file.originalname}`
+
+    if (contentHash) {
+      try {
+        await storeHash('0x' + contentHash);
+      } catch (e) {
+        console.error('EVM store failed', e);
+      }
+    }
+
       });
       fileUrl = `gs://${upload[0].bucket.name}/${upload[0].name}`;
 
